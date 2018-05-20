@@ -1,11 +1,13 @@
 package com.tai.git.collector;
 
 
+import com.tai.git.dto.UserDTO;
 import com.tai.git.model.Library;
 import com.tai.git.dto.QueryResultDTO;
 import com.tai.git.dto.QueryResultsDTO;
 import com.tai.git.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -33,11 +35,6 @@ public class LibraryDataCollector implements Runnable {
 
 	@Override
 	public void run() {
-//		try {
-//			Thread.sleep(10000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
 		for (int i = 0; i < 5000; i++) {
 			try {
 				Thread.sleep(6000);
@@ -52,31 +49,38 @@ public class LibraryDataCollector implements Runnable {
 	}
 
 	void fetchLibraries(String user) {
-		String fooResourceUrl = "https://api.github.com/search/code?q=pom.xml+in:path+user:" + user;
+		String fooResourceUrl = "https://api.github.com/search/code?q=pom.xml+in:path+user:" + user + "&access_token=d85c15341fbb35f61c67aab302f7ee4640b28e5c";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
 		System.out.println(fooResourceUrl);
 		HttpEntity<?> entity = new HttpEntity<>(headers);
-		ResponseEntity<QueryResultsDTO> exchange = restTemplate.exchange(
-				fooResourceUrl,
-				HttpMethod.GET,
-				entity,
-				QueryResultsDTO.class);
+		try {
+			ResponseEntity<QueryResultsDTO<QueryResultDTO>> exchange = restTemplate.exchange(
+					fooResourceUrl,
+					HttpMethod.GET,
+					entity,
+					new ParameterizedTypeReference<QueryResultsDTO<QueryResultDTO>>(){});
 
-		QueryResultDTO[] items = exchange.getBody().getItems();
-		Arrays.stream(items).map(QueryResultDTO::getHtml_url)
-				.map(url -> url.replace("blob", "raw"))
-				.map(this::downloadRawPage)
-				.map(pom -> pom.substring(pom.indexOf("<dependencies>") + 14, pom.indexOf("</dependencies>")))
-				.flatMap(dependencies -> Arrays.stream(dependencies.split("</dependency>")))
-				//.map(dependency -> dependency.substring(12))
-				.peek(s -> System.out.println(s))
-				.forEach(this::addToDatabase);
+			QueryResultDTO[] items = exchange.getBody().getItems();
+			Arrays.stream(items).map(QueryResultDTO::getHtml_url)
+					.map(url -> url.replace("blob", "raw"))
+					.map(this::downloadRawPage)
+					.peek(s -> System.out.println(s))
+					.filter(pom -> !pom.contains("<dependencies></dependencies>"))
+					.filter(pom -> pom.contains("<dependencies>"))
+					.map(pom -> pom.substring(pom.indexOf("<dependencies>") + 14, pom.indexOf("</dependencies>")))
+					.peek(s -> System.out.println(s))
+					.flatMap(dependencies -> Arrays.stream(dependencies.split("</dependency>")))
+					//.map(dependency -> dependency.substring(12))
+					.forEach(this::addToDatabase);
 
-
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
 
 	String downloadRawPage(String url) {
 		try (Scanner scanner = new Scanner(new URL(url).openStream(), StandardCharsets.UTF_8.toString())) {

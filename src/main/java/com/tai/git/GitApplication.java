@@ -13,7 +13,8 @@ public class GitApplication {
 	@Autowired
 	public GitApplication(LibraryDataCollector libraryDataCollector) {
 		this.libraryDataCollector = libraryDataCollector;
-		libraryDataCollector.run();
+		Thread t = new Thread(libraryDataCollector);
+		t.start();
 	}
 
 	public static void main(String[] args) {

@@ -1,11 +1,11 @@
 package com.tai.git.dto;
 
-public class QueryResultsDTO {
+public class QueryResultsDTO<T> {
 	private int totalCount;
 	private boolean incompleteResults;
-	private QueryResultDTO items[];
+	private T items[];
 
-	public QueryResultsDTO(int totalCount, boolean incompleteResults, QueryResultDTO[] items) {
+	public QueryResultsDTO(int totalCount, boolean incompleteResults, T[] items) {
 		this.totalCount = totalCount;
 		this.incompleteResults = incompleteResults;
 		this.items = items;
@@ -30,11 +30,11 @@ public class QueryResultsDTO {
 		this.incompleteResults = incompleteResults;
 	}
 
-	public QueryResultDTO[] getItems() {
+	public T[] getItems() {
 		return items;
 	}
 
-	public void setItems(QueryResultDTO[] items) {
+	public void setItems(T[] items) {
 		this.items = items;
 	}
 }
