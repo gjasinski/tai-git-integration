@@ -24,8 +24,8 @@ public class GithubUser {
 	private boolean processed;
 
 	@Column(nullable = false)
-	@OneToMany(mappedBy = "githubUser", targetEntity = UserUsageLibrary.class)
-	private List<UserUsageLibrary> userUsageLibraries = new LinkedList<>();
+	@OneToMany(mappedBy = "githubUser", targetEntity = GithubUserLibraryUsage.class)
+	private List<GithubUserLibraryUsage> userUsageLibraries = new LinkedList<>();
 
 	public GithubUser(long githubId, String githubLogin, boolean processed) {
 		this.githubId = githubId;
@@ -68,11 +68,11 @@ public class GithubUser {
 		this.processed = processed;
 	}
 
-	public List<UserUsageLibrary> getUserUsageLibraries() {
+	public List<GithubUserLibraryUsage> getUserUsageLibraries() {
 		return userUsageLibraries;
 	}
 
-	public void setUserUsageLibraries(List<UserUsageLibrary> userUsageLibraries) {
+	public void setUserUsageLibraries(List<GithubUserLibraryUsage> userUsageLibraries) {
 		this.userUsageLibraries = userUsageLibraries;
 	}
 }

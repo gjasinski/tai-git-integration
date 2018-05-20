@@ -27,17 +27,16 @@ public class UserProviderService {
 	private long totalCount;
 
 
-	UserProviderService(){
+	UserProviderService() {
 		fetchUsers();
 	}
 
-	String getNextUser() {
+	UserDTO getNextUser() {
 		if (users.isEmpty()) {
 			fetchUsers();
 			page++;
 		}
-		UserDTO user = users.remove(0);
-		return user.getLogin();
+		return users.remove(0);
 	}
 
 	private void fetchUsers() {
@@ -54,7 +53,7 @@ public class UserProviderService {
 	}
 
 	private String buildUrl() {
-		String url = API_GITHUB_URL + page + PER_PAGE_100;;
+		String url = API_GITHUB_URL + page + PER_PAGE_100;
 		return UriComponentsBuilder.fromHttpUrl(url).build().toUriString();
 	}
 

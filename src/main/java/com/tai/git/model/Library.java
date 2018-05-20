@@ -27,8 +27,8 @@ public class Library {
 	private long counter = 0;
 
 	@Column(nullable = false)
-	@OneToMany(mappedBy = "library", targetEntity = UserUsageLibrary.class)
-	private List<UserUsageLibrary> userUsageLibraries = new LinkedList<>();
+	@OneToMany(mappedBy = "library", targetEntity = GithubUserLibraryUsage.class)
+	private List<GithubUserLibraryUsage> userUsageLibraries = new LinkedList<>();
 
 	private Library(String groupId, String artifactId, String version, long counter) {
 		this.groupId = groupId;
@@ -76,11 +76,11 @@ public class Library {
 		this.version = version;
 	}
 
-	public List<UserUsageLibrary> getUserUsageLibraries() {
+	public List<GithubUserLibraryUsage> getUserUsageLibraries() {
 		return userUsageLibraries;
 	}
 
-	public void setUserUsageLibraries(List<UserUsageLibrary> userUsageLibraries) {
+	public void setUserUsageLibraries(List<GithubUserLibraryUsage> userUsageLibraries) {
 		this.userUsageLibraries = userUsageLibraries;
 	}
 

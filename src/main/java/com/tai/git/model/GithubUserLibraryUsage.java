@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class UserUsageLibrary {
+public class GithubUserLibraryUsage {
 	@Id
 	@GeneratedValue
 	private long id;
@@ -21,13 +21,13 @@ public class UserUsageLibrary {
 	@Column(nullable = false)
 	private long counter = 0;
 
-	public UserUsageLibrary(GithubUser githubUser, Library library, long counter) {
+	public GithubUserLibraryUsage(GithubUser githubUser, Library library, long counter) {
 		this.githubUser = githubUser;
 		this.library = library;
 		this.counter = counter;
 	}
 
-	public UserUsageLibrary() {
+	public GithubUserLibraryUsage() {
 	}
 
 	public long getId() {
@@ -60,5 +60,9 @@ public class UserUsageLibrary {
 
 	public void setCounter(long counter) {
 		this.counter = counter;
+	}
+
+	public void incrementCounter(){
+		this.counter++;
 	}
 }
