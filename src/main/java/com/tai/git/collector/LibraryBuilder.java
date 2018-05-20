@@ -1,9 +1,7 @@
 package com.tai.git.collector;
 
-import com.tai.git.model.Library;
-import com.tai.git.repository.LibraryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.tai.git.models.Library;
+import com.tai.git.repositories.LibraryRepository;
 
 import java.util.Optional;
 

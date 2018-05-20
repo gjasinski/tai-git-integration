@@ -1,14 +1,14 @@
 package com.tai.git.collector;
 
 
-import com.tai.git.dto.QueryResultDTO;
-import com.tai.git.dto.UserDTO;
-import com.tai.git.model.GithubUser;
-import com.tai.git.model.GithubUserLibraryUsage;
-import com.tai.git.model.Library;
-import com.tai.git.repository.GithubUserRepository;
-import com.tai.git.repository.GithubUserLibraryUsageRepository;
-import com.tai.git.repository.LibraryRepository;
+import com.tai.git.dtos.QueryResultDTO;
+import com.tai.git.dtos.UserDTO;
+import com.tai.git.models.GithubUser;
+import com.tai.git.models.GithubUserLibraryUsage;
+import com.tai.git.models.Library;
+import com.tai.git.repositories.GithubUserRepository;
+import com.tai.git.repositories.GithubUserLibraryUsageRepository;
+import com.tai.git.repositories.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

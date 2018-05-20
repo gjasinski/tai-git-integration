@@ -1,4 +1,4 @@
-package com.tai.git.model;
+package com.tai.git.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

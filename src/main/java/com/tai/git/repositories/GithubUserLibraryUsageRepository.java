@@ -1,8 +1,8 @@
-package com.tai.git.repository;
+package com.tai.git.repositories;
 
-import com.tai.git.model.GithubUser;
-import com.tai.git.model.GithubUserLibraryUsage;
-import com.tai.git.model.Library;
+import com.tai.git.models.GithubUser;
+import com.tai.git.models.GithubUserLibraryUsage;
+import com.tai.git.models.Library;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
