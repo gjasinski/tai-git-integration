@@ -1,4 +1,4 @@
-package com.tai.git.dtos;
+package com.tai.git.collector.dtos;
 
 public class UserDTO {
 	private String login;

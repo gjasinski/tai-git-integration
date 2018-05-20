@@ -1,4 +1,4 @@
-package com.tai.git.dtos;
+package com.tai.git.collector.dtos;
 
 public class QueryResultsDTO<T> {
 	private int total_count;

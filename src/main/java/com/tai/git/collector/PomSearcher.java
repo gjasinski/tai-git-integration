@@ -1,7 +1,7 @@
 package com.tai.git.collector;
 
-import com.tai.git.dtos.QueryResultDTO;
-import com.tai.git.dtos.QueryResultsDTO;
+import com.tai.git.collector.dtos.QueryResultDTO;
+import com.tai.git.collector.dtos.QueryResultsDTO;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

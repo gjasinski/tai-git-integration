@@ -1,6 +1,6 @@
 package com.tai.git.collector;
 
-import com.tai.git.dtos.QueryResultDTO;
+import com.tai.git.collector.dtos.QueryResultDTO;
 
 import java.util.Arrays;
 import java.util.function.Function;

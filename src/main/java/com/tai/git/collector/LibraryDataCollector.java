@@ -1,8 +1,8 @@
 package com.tai.git.collector;
 
 
-import com.tai.git.dtos.QueryResultDTO;
-import com.tai.git.dtos.UserDTO;
+import com.tai.git.collector.dtos.QueryResultDTO;
+import com.tai.git.collector.dtos.UserDTO;
 import com.tai.git.models.GithubUser;
 import com.tai.git.models.GithubUserLibraryUsage;
 import com.tai.git.models.Library;
