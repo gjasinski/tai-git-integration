@@ -30,11 +30,15 @@ public class Library {
 	@OneToMany(mappedBy = "library", targetEntity = UserUsageLibrary.class)
 	private List<UserUsageLibrary> userUsageLibraries = new LinkedList<>();
 
-	public Library(String groupId, String artifactId, String version, long counter) {
+	private Library(String groupId, String artifactId, String version, long counter) {
 		this.groupId = groupId;
 		this.artifactId = artifactId;
 		this.version = version;
 		this.counter = counter;
+	}
+
+	public Library(String groupId, String artifactId, String version) {
+		this(groupId, artifactId, version, 1);
 	}
 
 	public Library() {
@@ -86,5 +90,9 @@ public class Library {
 
 	public void setCounter(long counter) {
 		this.counter = counter;
+	}
+
+	public void incrementCounter(){
+		this.counter++;
 	}
 }

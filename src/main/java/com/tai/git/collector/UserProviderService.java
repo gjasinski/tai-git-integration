@@ -24,7 +24,12 @@ public class UserProviderService {
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final List<UserDTO> users = new LinkedList<>();
 	private long page;
+	private long totalCount;
 
+
+	UserProviderService(){
+		fetchUsers();
+	}
 
 	String getNextUser() {
 		if (users.isEmpty()) {
@@ -45,6 +50,7 @@ public class UserProviderService {
 				new ParameterizedTypeReference<QueryResultsDTO<UserDTO>>() {
 				});
 		users.addAll(Arrays.asList(exchange.getBody().getItems()));
+		totalCount = exchange.getBody().getTotal_count();
 	}
 
 	private String buildUrl() {
@@ -58,5 +64,7 @@ public class UserProviderService {
 		return headers;
 	}
 
-
+	public long getTotalCount() {
+		return totalCount;
+	}
 }

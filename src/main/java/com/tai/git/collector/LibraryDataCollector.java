@@ -1,97 +1,61 @@
 package com.tai.git.collector;
 
 
-import com.tai.git.dto.UserDTO;
-import com.tai.git.model.Library;
 import com.tai.git.dto.QueryResultDTO;
-import com.tai.git.dto.QueryResultsDTO;
+import com.tai.git.model.Library;
 import com.tai.git.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.stream.Stream;
 
 @Service
 public class LibraryDataCollector implements Runnable {
+
+	public static final int _6_SECONDS = 6000;
+
 	public static void main(String[] args) {
 		new LibraryDataCollector().fetchLibraries("gjasinski");
 	}
 
 	private final RestTemplate restTemplate = new RestTemplate();
+	private final PomCleaner pomCleaner = new PomCleaner();
+	private final PomSearcher pomDownloader = new PomSearcher();
 	private UserProviderService userProviderService = new UserProviderService();
 	@Autowired
 	private LibraryRepository libraryRepository;
 
 	@Override
 	public void run() {
-		for (int i = 0; i < 5000; i++) {
+		System.out.println("ALA MA KOTA" + userProviderService.getTotalCount());
+		for (int i = 0; i < userProviderService.getTotalCount(); i++) {
 			try {
-				Thread.sleep(6000);
+				Thread.sleep(_6_SECONDS);
+				System.out.println("USER!");
 				String user = userProviderService.getNextUser();
-				System.out.println("FETCHIN USER: " + user);
 				fetchLibraries(user);
-
 			} catch (Exception e) {
+				//todo move from stdout to logs
 				e.printStackTrace();
 			}
 		}
 	}
 
-	void fetchLibraries(String user) {
-		String fooResourceUrl = "https://api.github.com/search/code?q=pom.xml+in:path+user:" + user + "&access_token=d85c15341fbb35f61c67aab302f7ee4640b28e5c";
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-		System.out.println(fooResourceUrl);
-		HttpEntity<?> entity = new HttpEntity<>(headers);
+	private void fetchLibraries(String user) {
 		try {
-			ResponseEntity<QueryResultsDTO<QueryResultDTO>> exchange = restTemplate.exchange(
-					fooResourceUrl,
-					HttpMethod.GET,
-					entity,
-					new ParameterizedTypeReference<QueryResultsDTO<QueryResultDTO>>(){});
-
-			QueryResultDTO[] items = exchange.getBody().getItems();
-			Arrays.stream(items).map(QueryResultDTO::getHtml_url)
-					.map(url -> url.replace("blob", "raw"))
-					.map(this::downloadRawPage)
-					.peek(s -> System.out.println(s))
-					.filter(pom -> !pom.contains("<dependencies></dependencies>"))
-					.filter(pom -> pom.contains("<dependencies>"))
-					.map(pom -> pom.substring(pom.indexOf("<dependencies>") + 14, pom.indexOf("</dependencies>")))
-					.peek(s -> System.out.println(s))
-					.flatMap(dependencies -> Arrays.stream(dependencies.split("</dependency>")))
-					//.map(dependency -> dependency.substring(12))
-					.forEach(this::addToDatabase);
-
+			System.out.println("FETCHIN " + user);
+			QueryResultDTO[] items = pomDownloader.downloadPOMForUser(user);
+			Stream<QueryResultDTO> stream = Arrays.stream(items);
+			pomCleaner.cleanPom(stream).forEach(this::addToDatabase);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 
-	String downloadRawPage(String url) {
-		try (Scanner scanner = new Scanner(new URL(url).openStream(), StandardCharsets.UTF_8.toString())) {
-			scanner.useDelimiter("\\A");
-			return scanner.hasNext() ? scanner.next() : "";
-		} catch (IOException ex) {
-			return "";
-		}
-	}
-
-	void addToDatabase(String dependecy) {
+	private void addToDatabase(String dependecy) {
 		if (dependecy.contains("<version>") && dependecy.contains("<artifactId>") && dependecy.contains("<groupId>")) {
 			String groupId = dependecy.substring(dependecy.indexOf("<groupId>") + 9, dependecy.indexOf("</groupId>"));
 			String artifactId = dependecy.substring(dependecy.indexOf("<artifactId>") + 12, dependecy.indexOf("</artifactId>"));
@@ -104,9 +68,8 @@ public class LibraryDataCollector implements Runnable {
 				fetched.setCounter(fetched.getCounter() + 1);
 				libraryRepository.save(fetched);
 			} else {
-				Library library = new Library(groupId, artifactId, version, 1);
+				Library library = new Library(groupId, artifactId, version);
 				libraryRepository.save(library);
-				System.out.println("CREATED AND ADDED " + library.toString());
 			}
 
 		}
