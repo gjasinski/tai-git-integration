@@ -18,6 +18,9 @@ import java.util.List;
 
 @Service
 public class UserProviderService {
+	private static final String API_GITHUB_URL = "https://api.github.com/search/users?q=language:Java&sort=joined&order=asc&page=";
+	private static final String PER_PAGE_100 = "&per_page=100";
+	private static final String ACCEPT_HTTP_HEADER = "Accept";
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final List<UserDTO> users = new LinkedList<>();
 	private long page;
@@ -33,23 +36,27 @@ public class UserProviderService {
 	}
 
 	private void fetchUsers() {
-		String fooResourceUrl = "https://api.github.com/search/users?q=language:Java&sort=joined&order=asc&page=" + page + "&per_page=100";
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(fooResourceUrl)
-				.queryParam("since", page);
-
-
+		HttpHeaders headers = buildHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<QueryResultsDTO<UserDTO>> exchange = restTemplate.exchange(
-				builder.build().toUriString(),
+				buildUrl(),
 				HttpMethod.GET,
 				entity,
 				new ParameterizedTypeReference<QueryResultsDTO<UserDTO>>() {
 				});
 		users.addAll(Arrays.asList(exchange.getBody().getItems()));
 	}
+
+	private String buildUrl() {
+		String url = API_GITHUB_URL + page + PER_PAGE_100;;
+		return UriComponentsBuilder.fromHttpUrl(url).build().toUriString();
+	}
+
+	private HttpHeaders buildHeaders() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set(ACCEPT_HTTP_HEADER, MediaType.APPLICATION_JSON_VALUE);
+		return headers;
+	}
+
 
 }
