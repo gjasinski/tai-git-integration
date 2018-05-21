@@ -2,12 +2,12 @@
   Welcome to {{ title }}!
 </h1>
 
-<button (click)="getUsers()">Get Users!</button>
+<button class="button" (click)="getUsers()">Get Users!</button>
 
 <div class="container">
   <ul class="list-group" *ngFor="let user of users">
     <li class="list-group-item">
-      {{user | json}}
+      {{user.githubLogin}}
     </li>
   </ul>
 </div>
