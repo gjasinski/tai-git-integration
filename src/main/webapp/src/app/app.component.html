@@ -4,3 +4,12 @@
 
 <button (click)="getUsers()">Get Users!</button>
 
+<div class="container">
+  <ul class="list-group" *ngFor="let user of users">
+    <li class="list-group-item">
+      {{user | json}}
+    </li>
+  </ul>
+</div>
+
+

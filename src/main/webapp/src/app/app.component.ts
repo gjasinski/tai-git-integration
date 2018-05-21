@@ -11,7 +11,7 @@ import {UserService} from "./app.userService";
 export class AppComponent {
   title = 'app';
 
-  public users;
+  public users : any;
 
   constructor(private _userService: UserService) {
   }
@@ -20,7 +20,7 @@ export class AppComponent {
     this._userService.getUsers().subscribe(
       data => {
         this.users = data
-        // console.log(data)
+        console.log(data)
       },
       err => console.error(err),
       () => console.log('done loading foods')
