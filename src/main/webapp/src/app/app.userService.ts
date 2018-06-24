@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http:HttpClient) {}
 
   getUsers() {
-    return this.http.get('http://localhost:8080/api/users');
+    return this.http.get('https://obscure-atoll-92583.herokuapp.com/api/users');
   }
 }
 
