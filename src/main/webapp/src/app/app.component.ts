@@ -8,7 +8,7 @@ import {AuthService} from "./auth.service";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [UserService, AuthService]
+  providers: [UserService, AuthService, ]
 })
 export class AppComponent {
 
@@ -17,7 +17,7 @@ export class AppComponent {
   constructor(authService : AuthService, router: Router) {
 
     if (authService.authenticated == false) {
-          router.navigate(['login']);
+         // router.navigate(['login']);
     }
   }
 

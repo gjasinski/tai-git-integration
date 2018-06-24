@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {Router, RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./login.component";
+import {UserlistComponent} from "./userlist.component";
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: ''},
@@ -14,7 +15,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent
+    AppComponent, LoginComponent, UserlistComponent
   ],
   imports: [
     RouterModule.forRoot(routes), BrowserModule, HttpClientModule, NgbModule.forRoot()

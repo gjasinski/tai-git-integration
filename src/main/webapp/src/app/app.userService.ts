@@ -17,4 +17,3 @@ export class UserService {
     return this.http.get('https://obscure-atoll-92583.herokuapp.com/api/users');
   }
 }
-
