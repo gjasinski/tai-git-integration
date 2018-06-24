@@ -37,8 +37,8 @@ public class UserProviderService {
 	@Autowired
 	public UserProviderService(GithubUserRepository githubUserRepository) {
 		this.githubUserRepository = githubUserRepository;
-
-		System.out.println(page);
+		long processedUsers = githubUserRepository.countByProcessed(true);
+		page = processedUsers / PER_PAGE;
 		fetchUsers();
 	}
 
@@ -47,8 +47,8 @@ public class UserProviderService {
 		Optional<GithubUser> byGithubId;
 		do{
 			if (users.isEmpty()) {
-				fetchUsers();
 				page++;
+				fetchUsers();
 			}
 			remove = users.remove(0);
 			byGithubId = githubUserRepository.getByGithubId(remove.getId());
@@ -70,8 +70,8 @@ public class UserProviderService {
 	}
 
 	private void fetchUsers() {
-		long processedUsers = githubUserRepository.countByProcessed(true);
-		long page = processedUsers / PER_PAGE;
+
+		System.out.println(page);
 		HttpHeaders headers = buildHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		ResponseEntity<QueryResultsDTO<GitUserDTO>> exchange = restTemplate.exchange(
@@ -86,6 +86,7 @@ public class UserProviderService {
 
 	private String buildUrl(long page) {
 		String url = API_GITHUB_SEARCH_USERS_URL + page + PER_PAGE_100;
+		System.out.println(url);
 		return UriComponentsBuilder.fromHttpUrl(url).build().toUriString();
 	}
 
