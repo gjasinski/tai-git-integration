@@ -3,14 +3,7 @@
     Welcome to {{ title }}!
   </h1>
 </header>
+
 <div class="container">
-  <button type="button" class="btn btn-primary" (click)="getUsers()">Get Users!</button>
-  <ul class="list-group" *ngFor="let user of users">
-    <li class="list-group-item">
-      {{user.githubLogin}}
-    </li>
-  </ul>
-
+  <router-outlet></router-outlet>
 </div>
-
-

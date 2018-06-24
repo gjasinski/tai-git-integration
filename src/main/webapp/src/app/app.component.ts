@@ -1,30 +1,24 @@
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "./app.userService";
+import {Router} from "@angular/router";
+import {AuthService} from "./auth.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [UserService]
+  providers: [UserService, AuthService]
 })
 export class AppComponent {
-  title = 'app';
 
-  public users : any;
+  title = 'GitHub Turbo Statistics Application';
 
-  constructor(private _userService: UserService) {
-  }
+  constructor(authService : AuthService, router: Router) {
 
-  getUsers() {
-    this._userService.getUsers().subscribe(
-      data => {
-        this.users = data
-        console.log(data)
-      },
-      err => console.error(err),
-      () => console.log('done loading foods')
-    );
+    if (authService.authenticated == false) {
+          router.navigate(['login']);
+    }
   }
 
 }
