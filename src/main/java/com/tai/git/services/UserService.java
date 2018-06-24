@@ -11,6 +11,8 @@ import com.tai.git.models.GithubUserLibraryUsage;
 import com.tai.git.repositories.GithubUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -39,8 +41,8 @@ public class UserService {
 		this.userProviderService = userProviderService;
 	}
 
-	public List<UserDTO> getAllUsers() {
-		return this.githubUserRepository.findAll()
+	public List<UserDTO> getAllUsers(int page, int limit) {
+		return this.githubUserRepository.findAll(new PageRequest(page, limit))
 				.stream()
 				.map(user -> new UserDTO(user.getId(), user.getGithubId(), user.getGithubLogin(), user.isProcessed()))
 				.collect(Collectors.toList());

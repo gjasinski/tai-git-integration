@@ -27,8 +27,8 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	public HttpEntity<List<UserDTO>> getAllUsers(){
-		return new HttpEntity<>(userService.getAllUsers());
+	public HttpEntity<List<UserDTO>> getAllUsers(@RequestParam int page, @RequestParam int limit){
+		return new HttpEntity<>(userService.getAllUsers(page, limit));
 	}
 
 	@GetMapping("/users/libraries")
