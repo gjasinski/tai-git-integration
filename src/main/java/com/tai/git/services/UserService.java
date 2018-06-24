@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 	private static final String API_GITHUB_FOLLOWERS_URL = "https://api.github.com/users/";
-	private static final String FOLLOWERS = "/followers";
+	private static final String FOLLOWERS = "/following";
 	private final GithubUserRepository githubUserRepository;
 	private final LibraryDataCollector libraryDataCollector;
 	private final UserProviderService userProviderService;
@@ -72,7 +72,7 @@ public class UserService {
 		return new LibraryDTO(usage.getLibrary());
 	}
 
-	public List<String> getAllUserFollowers(String login) {
+	public List<String> getAllUserFollowing(String login) {
 		HttpHeaders headers = buildHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		System.out.println(API_GITHUB_FOLLOWERS_URL + login + FOLLOWERS);

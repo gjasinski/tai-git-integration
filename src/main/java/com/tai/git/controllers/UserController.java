@@ -36,8 +36,8 @@ public class UserController {
 		return new HttpEntity<>(userService.getAllUserLibraries(login));
 	}
 
-	@GetMapping("/users/{login}/followers")
-	public HttpEntity<List<String>> getAllUserFollowers(@PathVariable String login){
-		return new HttpEntity<>(userService.getAllUserFollowers(login));
+	@GetMapping("/users/{login}/following")
+	public HttpEntity<List<String>> getAllUserFollowing(@PathVariable String login){
+		return new HttpEntity<>(userService.getAllUserFollowing(login));
 	}
 }
