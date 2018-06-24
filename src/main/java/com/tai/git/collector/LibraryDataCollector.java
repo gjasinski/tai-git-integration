@@ -1,19 +1,22 @@
 package com.tai.git.collector;
 
 
-import com.tai.git.collector.dtos.QueryResultDTO;
 import com.tai.git.collector.dtos.GitUserDTO;
+import com.tai.git.collector.dtos.QueryResultDTO;
 import com.tai.git.models.GithubUser;
 import com.tai.git.models.GithubUserLibraryUsage;
 import com.tai.git.models.Library;
-import com.tai.git.repositories.GithubUserRepository;
 import com.tai.git.repositories.GithubUserLibraryUsageRepository;
+import com.tai.git.repositories.GithubUserRepository;
 import com.tai.git.repositories.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LibraryDataCollector implements Runnable {
@@ -47,22 +50,24 @@ public class LibraryDataCollector implements Runnable {
 		}
 	}
 
-	public void fetchLibraries(GitUserDTO user) {
+	public List<Library> fetchLibraries(GitUserDTO user) {
 		GithubUser githubUser = saveUser(user);
+		List<Library> libraries = Collections.emptyList();
 		try {
 			QueryResultDTO[] items = pomDownloader.downloadPOMForUser(user.getLogin());
-			pomCleaner.cleanPom(Arrays.stream(items))
+			libraries = pomCleaner.cleanPom(Arrays.stream(items))
 					.map(libraryBuilder::addToDatabase)
 					.filter(Optional::isPresent)
 					.map(Optional::get)
-					.forEach(library -> saveUserLibraryUsage(githubUser, library));
+					.peek(library -> saveUserLibraryUsage(githubUser, library))
+					.collect(Collectors.toList());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			githubUser.setProcessed(true);
 			githubUserRepository.save(githubUser);
 		}
+		return libraries;
 	}
 
 	private GithubUser saveUser(GitUserDTO userDTO) {
