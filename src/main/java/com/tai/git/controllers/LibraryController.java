@@ -1,8 +1,7 @@
 package com.tai.git.controllers;
 
 import com.tai.git.dtos.LibraryDTO;
-import com.tai.git.dtos.UserDTO;
-import com.tai.git.services.UserService;
+import com.tai.git.services.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,22 +15,23 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class LibraryController {
 
-	private final UserService userService;
+	private final LibraryService libraryService;
 
 	@Autowired
-	public UserController(UserService userService) {
-		this.userService = userService;
+	public LibraryController(LibraryService libraryService) {
+		this.libraryService = libraryService;
 	}
 
-	@GetMapping("/users")
-	public HttpEntity<List<UserDTO>> getAllUsers(){
-		return new HttpEntity<>(userService.getAllUsers());
-	}
 
-	@GetMapping("/users/libraries")
-	public HttpEntity<List<LibraryDTO>> getAllUserLibraries(@RequestParam String userName){
-		return new HttpEntity<>(userService.getAllUserLibraries(userName));
+	@GetMapping("/libraries")
+	public HttpEntity<List<LibraryDTO>> getLibraries(@RequestParam int limit, @RequestParam int page, @RequestParam boolean order){
+		if (order) {
+			return new HttpEntity<>(libraryService.getLibrariesTopUsage(limit, page));
+		}
+		else{
+			return new HttpEntity<>(libraryService.getLibraries(limit, page));
+		}
 	}
 }

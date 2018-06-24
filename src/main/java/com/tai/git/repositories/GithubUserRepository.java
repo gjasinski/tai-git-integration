@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface GithubUserRepository extends JpaRepository<GithubUser, Long> {
 	Optional<GithubUser> getByGithubId(long githubId);
 
+	Optional<GithubUser> getByGithubLogin(String login);
+
 	Long countByProcessed(boolean processed);
 }

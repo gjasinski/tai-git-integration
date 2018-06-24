@@ -75,4 +75,5 @@ public class GithubUser {
 	public void setUserUsageLibraries(List<GithubUserLibraryUsage> userUsageLibraries) {
 		this.userUsageLibraries = userUsageLibraries;
 	}
+
 }

@@ -2,7 +2,7 @@ package com.tai.git.collector;
 
 
 import com.tai.git.collector.dtos.QueryResultDTO;
-import com.tai.git.collector.dtos.UserDTO;
+import com.tai.git.collector.dtos.GitUserDTO;
 import com.tai.git.models.GithubUser;
 import com.tai.git.models.GithubUserLibraryUsage;
 import com.tai.git.models.Library;
@@ -38,7 +38,7 @@ public class LibraryDataCollector implements Runnable {
 		for (int i = 0; i < 1000/*userProviderService.getTotalCount()*/; i++) {
 			try {
 				Thread.sleep(_6_SECONDS);
-				UserDTO user = userProviderService.getNextUser();
+				GitUserDTO user = userProviderService.getNextUser();
 				fetchLibraries(user);
 			} catch (Exception e) {
 				//todo move from stdout to logs
@@ -47,29 +47,30 @@ public class LibraryDataCollector implements Runnable {
 		}
 	}
 
-	private void fetchLibraries(UserDTO user) {
+	public void fetchLibraries(GitUserDTO user) {
+		GithubUser githubUser = saveUser(user);
 		try {
-			GithubUser githubUser = saveUser(user);
 			QueryResultDTO[] items = pomDownloader.downloadPOMForUser(user.getLogin());
 			pomCleaner.cleanPom(Arrays.stream(items))
 					.map(libraryBuilder::addToDatabase)
 					.filter(Optional::isPresent)
 					.map(Optional::get)
 					.forEach(library -> saveUserLibraryUsage(githubUser, library));
-			githubUser.setProcessed(true);
-			githubUserRepository.save(githubUser);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			githubUser.setProcessed(true);
+			githubUserRepository.save(githubUser);
+		}
 	}
 
-	private GithubUser saveUser(UserDTO userDTO) {
+	private GithubUser saveUser(GitUserDTO userDTO) {
 		return githubUserRepository.getByGithubId(userDTO.getId())
 				.orElseGet(() -> createGithubUserAndSave(userDTO));
 	}
 
-	private GithubUser createGithubUserAndSave(UserDTO userDTO) {
+	private GithubUser createGithubUserAndSave(GitUserDTO userDTO) {
 		GithubUser githubUser = new GithubUser(userDTO.getId(), userDTO.getLogin(), false);
 		githubUserRepository.save(githubUser);
 		return githubUser;
