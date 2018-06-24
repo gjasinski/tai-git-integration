@@ -23,18 +23,19 @@ public class LibraryDataCollector implements Runnable {
 	private final PomSearcher pomDownloader = new PomSearcher();
 	private final GithubUserRepository githubUserRepository;
 	private final GithubUserLibraryUsageRepository githubUserUsageLibraryRepository;
-	private UserProviderService userProviderService = new UserProviderService();
+	private final UserProviderService userProviderService;
 
 	@Autowired
-	public LibraryDataCollector(GithubUserRepository githubUserRepository, GithubUserLibraryUsageRepository githubUserUsageLibraryRepository, LibraryRepository libraryRepository) {
+	public LibraryDataCollector(GithubUserRepository githubUserRepository, GithubUserLibraryUsageRepository githubUserUsageLibraryRepository, LibraryRepository libraryRepository, UserProviderService userProviderService) {
 		this.githubUserRepository = githubUserRepository;
 		this.githubUserUsageLibraryRepository = githubUserUsageLibraryRepository;
 		this.libraryBuilder = new LibraryBuilder(libraryRepository);
+		this.userProviderService = userProviderService;
 	}
 
 	@Override
 	public void run() {
-		for (int i = 0; i < 100/*userProviderService.getTotalCount()*/; i++) {
+		for (int i = 0; i < 1000/*userProviderService.getTotalCount()*/; i++) {
 			try {
 				Thread.sleep(_6_SECONDS);
 				UserDTO user = userProviderService.getNextUser();
@@ -55,6 +56,8 @@ public class LibraryDataCollector implements Runnable {
 					.filter(Optional::isPresent)
 					.map(Optional::get)
 					.forEach(library -> saveUserLibraryUsage(githubUser, library));
+			githubUser.setProcessed(true);
+			githubUserRepository.save(githubUser);
 
 		} catch (Exception e) {
 			e.printStackTrace();

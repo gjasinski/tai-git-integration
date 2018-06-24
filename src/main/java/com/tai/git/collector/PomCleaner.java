@@ -33,21 +33,26 @@ class PomCleaner {
 
 	private String removeVariables(String pom) {
 		int loop = pom.split("<version>\\$\\{").length;
-		System.out.println("LOOP + " + loop);
-		for (int i = 1; i < loop; i++) {
-			String variable = extractVariable(pom);
+		try {
+			for (int i = 1; i < loop; i++) {
+				String variable = extractVariable(pom);
 			/*if(variable.equals("project.version")){
 				variable = "version";
 			}*/
-			if (containsVariable(pom, variable)) {
-				String variableValue = extractVariableValue(pom, variable);
-				pom = swapVariableWithVariableValue(pom, variable, variableValue);
+				if (containsVariable(pom, variable)) {
+					String variableValue = extractVariableValue(pom, variable);
+					pom = swapVariableWithVariableValue(pom, variable, variableValue);
+				} else {
+					pom = swapVariableWithVariableValue(pom, variable, "");
+				}
 			}
-			else {
-				pom = swapVariableWithVariableValue(pom, variable, "");
-			}
+			return pom;
 		}
-		return pom;
+		catch (Exception ex){
+			// TODO: 24.06.18 log it
+			return pom;
+		}
+
 	}
 
 	private boolean containsVariable(String pom, String variable) {
@@ -56,12 +61,7 @@ class PomCleaner {
 
 	private String extractVariable(String pom) {
 		String tmp = pom.substring(pom.indexOf("<version>${") + 11);
-		System.out.println("BEEEDE WYPISYWAL" + tmp);
-		try {
-			return tmp.substring(0, tmp.indexOf('}'));
-		}catch (Exception e){
-			throw new IllegalArgumentException(tmp);
-		}
+		return tmp.substring(0, tmp.indexOf('}'));
 	}
 
 	private String extractVariableValue(String pom, String variable) {
