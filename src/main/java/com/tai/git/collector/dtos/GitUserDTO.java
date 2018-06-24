@@ -1,6 +1,6 @@
 package com.tai.git.collector.dtos;
 
-public class UserDTO {
+public class GitUserDTO {
 	private String login;
 	private long id;
 	private String avatar_url;
@@ -19,7 +19,7 @@ public class UserDTO {
 //	private String type;
 //	private String siteAdmin;
 
-	public UserDTO(String login, long id, String avatar_url, String gravatarId, String url, String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl, String subscriptionsUrl, String organizationsUrl, String reposUrl, String eventsUrl, String receivedEventsUrl, String type, String siteAdmin) {
+	public GitUserDTO(String login, long id, String avatar_url, String gravatarId, String url, String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl, String subscriptionsUrl, String organizationsUrl, String reposUrl, String eventsUrl, String receivedEventsUrl, String type, String siteAdmin) {
 		this.login = login;
 		this.id = id;
 		this.avatar_url = avatar_url;
@@ -39,7 +39,7 @@ public class UserDTO {
 //		this.siteAdmin = siteAdmin;
 	}
 
-	public UserDTO(String login, long id, String avatar_url, String gravatarId, String url, String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl, String subscriptionsUrl, String organizationsUrl) {
+	public GitUserDTO(String login, long id, String avatar_url, String gravatarId, String url, String htmlUrl, String followersUrl, String followingUrl, String gistsUrl, String starredUrl, String subscriptionsUrl, String organizationsUrl) {
 		this.login = login;
 		this.id = id;
 		this.avatar_url = avatar_url;
@@ -54,7 +54,7 @@ public class UserDTO {
 		this.organizationsUrl = organizationsUrl;
 	}
 
-	public UserDTO() {
+	public GitUserDTO() {
 	}
 
 	public String getLogin() {
