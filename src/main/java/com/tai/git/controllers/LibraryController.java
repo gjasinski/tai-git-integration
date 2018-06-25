@@ -24,7 +24,6 @@ public class LibraryController {
 		this.libraryService = libraryService;
 	}
 
-	@CrossOrigin(origins = "http://localhost:4200", maxAge = 6000)
 	@GetMapping("/libraries")
 	public HttpEntity<List<LibraryDTO>> getLibraries(@RequestParam int limit, @RequestParam int page, @RequestParam boolean order){
 		if (order) {
