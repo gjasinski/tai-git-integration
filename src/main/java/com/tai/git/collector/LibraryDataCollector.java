@@ -38,7 +38,7 @@ public class LibraryDataCollector implements Runnable {
 
 	@Override
 	public void run() {
-		for (int i = 0; i < 1000/*userProviderService.getTotalCount()*/; i++) {
+		for (int i = 0; i < 0/*userProviderService.getTotalCount()*/; i++) {
 			try {
 				Thread.sleep(_6_SECONDS);
 				GitUserDTO user = userProviderService.getNextUser();
