@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://obscure-atoll-92583.herokuapp.com")
 @RestController
 @RequestMapping("/api")
 public class UserController {

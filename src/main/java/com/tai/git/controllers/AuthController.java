@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "https://obscure-atoll-92583.herokuapp.com", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class AuthController {
