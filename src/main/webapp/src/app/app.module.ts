@@ -9,8 +9,9 @@ import {LoginComponent} from "./login.component";
 import {UserlistComponent} from "./userlist.component";
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: ''},
-  { path: 'login', component: LoginComponent}
+  { path: '', pathMatch: 'full', redirectTo: 'home'},
+  { path: 'login', component: LoginComponent},
+  { path: 'home', component: UserlistComponent}
 ];
 
 @NgModule({

@@ -1,9 +1,56 @@
 <div class="container">
-  <button type="button" class="btn btn-primary" (click)="getUsers()">Get Users!</button>
-  <ul class="list-group" *ngFor="let user of users">
-    <li class="list-group-item">
-      {{user.githubLogin}}
-    </li>
-  </ul>
 
+  <div class="row">
+    <div class="col-sm">
+      <div class="container">
+        <h3>List of users available:</h3>
+        <br>
+        <ul class="list-group" *ngFor="let user of users">
+          <li class="list-group-item">
+            <button type="button" class="btn" (click)="getUserInfo(user.githubLogin)">{{user.githubLogin}}</button>
+          </li>
+        </ul>
+      </div>
+
+      <br>
+
+      <nav aria-label="...">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" (click)="getUsers(-1)" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" (click)="getUsers(1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div class="col-sm">
+      <div class="container">
+        <h3>Libraries used by {{currentUser}}</h3>
+        <br>
+        <ul class="list-group" *ngFor="let library of userLibraries">
+          <li class="list-group-item">
+            <p>{{library.groupId}}</p>
+            <p class="counter">{{library.counter}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-sm">
+      <div class="container">
+        <h3>Followers of {{currentUser}}</h3>
+        <br>
+        <ul class="list-group" *ngFor="let follower of userFollowers">
+          <li class="list-group-item">
+            <p>{{follower}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
 </div>

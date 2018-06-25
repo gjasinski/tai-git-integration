@@ -1,5 +1,7 @@
 package com.tai.git.collector.dtos;
 
+import com.tai.git.dtos.StringDTO;
+
 public class GitUserDTO {
 	private String login;
 	private long id;
@@ -55,6 +57,10 @@ public class GitUserDTO {
 	}
 
 	public GitUserDTO() {
+	}
+
+	public StringDTO getLoginDTO() {
+		return new StringDTO(login);
 	}
 
 	public String getLogin() {

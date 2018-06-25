@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -36,8 +36,8 @@ public class UserController {
 		return new HttpEntity<>(userService.getAllUserLibraries(login));
 	}
 
-	@GetMapping("/users/{login}/following")
-	public HttpEntity<List<String>> getAllUserFollowing(@PathVariable String login){
+	@GetMapping("/users/following")
+	public HttpEntity<List<String>> getAllUserFollowing(@RequestParam String login){
 		return new HttpEntity<>(userService.getAllUserFollowing(login));
 	}
 }
