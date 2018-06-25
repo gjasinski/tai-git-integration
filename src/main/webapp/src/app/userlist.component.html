@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
 
   <div class="row">
     <div class="col-sm">
@@ -6,24 +6,25 @@
         <h3>List of users available:</h3>
         <br>
         <ul class="list-group" *ngFor="let user of users">
-          <li class="list-group-item">
-            <button type="button" class="btn" (click)="getUserInfo(user.githubLogin)">{{user.githubLogin}}</button>
+          <li (click)="getUserInfo(user.githubLogin)" class="list-group-item">
+            {{user.githubLogin}}
           </li>
         </ul>
+
+        <br>
+
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" (click)="getUsers(-1)" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="getUsers(1)">Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
 
-      <br>
-
-      <nav aria-label="...">
-        <ul class="pagination">
-          <li class="page-item">
-            <a class="page-link" (click)="getUsers(-1)" tabindex="-1">Previous</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" (click)="getUsers(1)">Next</a>
-          </li>
-        </ul>
-      </nav>
 
     </div>
 

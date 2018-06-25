@@ -1,9 +1,21 @@
-<header>
-  <h1 class="title">
-    Welcome to {{ title }}!
-  </h1>
-</header>
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Welcome to {{ title }}!</a>
+    <div  class="collapse navbar-collapse navbar-right" id="navbarNav">
+      <ul  class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" (click)="goToUsers()">Users <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="goToStats()">Overall Statistics</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
 
-<div class="container">
+<br>
+
+<div class="container-fluid">
   <router-outlet></router-outlet>
 </div>

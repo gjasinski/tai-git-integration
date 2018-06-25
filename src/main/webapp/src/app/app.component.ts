@@ -12,13 +12,18 @@ import {AuthService} from "./auth.service";
 })
 export class AppComponent {
 
-  title = 'GitHub Turbo Statistics Application';
+  title = 'GitHub Statistics Application';
 
-  constructor(authService : AuthService, router: Router) {
+  constructor(private authService : AuthService, private router: Router) {
 
-    if (authService.authenticated == false) {
-         // router.navigate(['login']);
-    }
+  }
+
+  goToUsers(){
+    this.router.navigate(['userlist'])
+  }
+
+  goToStats(){
+    this.router.navigate(['stats'])
   }
 
 }

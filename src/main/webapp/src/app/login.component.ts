@@ -10,9 +10,10 @@ import {AuthService} from "./auth.service";
 export class LoginComponent {
 
   constructor(private app: AuthService, private http: HttpClient, private router: Router) {
+    LoginComponent.login()
   }
 
-  login() {
+  static login() {
     AuthService.authenticate();
   }
 

@@ -1,22 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {Router, RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./login.component";
 import {UserlistComponent} from "./userlist.component";
+import {StatsComponent} from "./stats.component";
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home'},
-  { path: 'login', component: LoginComponent},
-  { path: 'home', component: UserlistComponent}
+  {path: '', pathMatch: 'full', redirectTo: 'userlist'},
+  {path: 'login', component: LoginComponent},
+  {path: 'userlist', component: UserlistComponent},
+  {path: 'stats', component: StatsComponent}
 ];
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, UserlistComponent
+    AppComponent, LoginComponent, UserlistComponent, StatsComponent
   ],
   imports: [
     RouterModule.forRoot(routes), BrowserModule, HttpClientModule, NgbModule.forRoot()
@@ -24,4 +26,5 @@ const routes: Routes = [
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

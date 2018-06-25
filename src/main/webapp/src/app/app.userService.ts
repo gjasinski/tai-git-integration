@@ -11,20 +11,23 @@ const httpOptions = {
 @Injectable()
 export class UserService {
 
-  url = 'http://localhost:8080';
+  url = 'https://obscure-atoll-92583.herokuapp.com';
 
   constructor(private http:HttpClient) {}
 
   getUsers(currentPage: number) {
-    return this.http.get('http://localhost:8080/api/users?page=' + currentPage +'&limit=6');
+    return this.http.get(this.url + '/api/users?page=' + currentPage +'&limit=10');
   }
 
   getUserLibraries(login) {
-    return this.http.get('http://localhost:8080/api/users/libraries?login=' + login);
+    return this.http.get(this.url + '/api/users/libraries?login=' + login);
   }
 
   getUserFollowers(login) {
-    return this.http.get('http://localhost:8080/api/users/following?login=' + login);
+    return this.http.get(this.url + '/api/users/following?login=' + login);
   }
 
+  getStats(currentPage: number) {
+    return this.http.get(this.url + '/api/libraries?limit=10&page=' + currentPage + '&order=true' );
+  }
 }

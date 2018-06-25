@@ -1,0 +1,32 @@
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-sm">
+      <div class="container">
+        <h3>Overall statistics:</h3>
+        <br>
+        <ul class="list-group" *ngFor="let library of libraries">
+          <li class="list-group-item">
+            {{library.groupId}}
+            {{library.counter}}
+          </li>
+        </ul>
+
+        <br>
+
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" (click)="getStats(-1)" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" (click)="getStats(1)">Next</a>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+
+    </div>
+  </div>
+</div>
